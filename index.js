@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+require('dotenv').config()
 const connectDB = require('./configDB'); // connect MongoDB 
 const PORT = process.env.PORT || 5000; // port number
 const app = express();
