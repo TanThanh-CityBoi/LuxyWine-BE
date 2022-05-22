@@ -2,7 +2,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const Product = new Schema({
+const ProductSchema = new Schema({
    name: String,
    avtURL: String,
    imgURLs: [String],
@@ -10,7 +10,7 @@ const Product = new Schema({
    importPrice: Number, // Giá nhập
    sellPrice: Number, // Giá bán gốc
    discountPrice: Number, // Giá bán đã sale
-   temperature: { minimum: Number, maximun: Number }, // Nhiệt độ sử dụng
+   temperature: { minimum: Number, maximum: Number }, // Nhiệt độ sử dụng
    color: [String],
    food: [String],
    origin: String, // Xuất xứ
@@ -24,4 +24,6 @@ const Product = new Schema({
    productType: String // wine/combo/accessory
 });
 
-module.exports = mongoose.model("Product", Product);
+
+const Product = mongoose.model('products', ProductSchema);
+module.exports = Product;
