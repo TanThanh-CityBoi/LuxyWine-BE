@@ -89,4 +89,4 @@ class BannerController{
         });
       };
 }
-module.exports = new NewsController()
+module.exports = new BannerController()

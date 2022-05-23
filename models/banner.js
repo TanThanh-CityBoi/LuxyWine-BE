@@ -1,13 +1,9 @@
-
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const Banner = new Schema({
-    avtUrl: String,
-    title: String,
-    description: String,
-    views: Number,
-    content: String
+  slides: [{ avtUrl: String, title: String, description: String }], // Danh sách các hình 
+  type: Number // 1: 
 });
 
 module.exports = mongoose.model("Banner", Banner);
