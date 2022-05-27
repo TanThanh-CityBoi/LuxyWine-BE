@@ -36,8 +36,8 @@ const ProductSchema = new Schema({
   sugar: Number, // Hàm lượng đường
   experation: Date,
   productType: String, // wine/combo/accessory,
-  isSpecial: Boolean, // :à sản phẩm đặc biệt
-  isNew: Boolean, // là sản phẩm mới
+  isSpecialProduct: Boolean, // :à sản phẩm đặc biệt
+  isNewProduct: Boolean, // là sản phẩm mới
   hasSold: Number, // số lượng sản phẩm đã bán
   
 });

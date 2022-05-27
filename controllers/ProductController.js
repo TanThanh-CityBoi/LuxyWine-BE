@@ -76,6 +76,10 @@ class ProductController {
     );
   };
 
+  deleteMany = async (req, res)=>{
+    res.status(200).send("Hihi delete many")
+  }
+
   _delete = async (req, res) => {
     Product.deleteOne({_id : req.params.id}, function (err, data) {
       console.log({ err, data });

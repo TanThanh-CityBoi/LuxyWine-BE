@@ -11,6 +11,7 @@ router.get("/:id", ProductController.getOne);
 router.post("/new", ProductController.create);
 router.put("/:id", ProductController.update);
 router.delete("/:id", ProductController._delete);
+router.delete("/deleteMany", ProductController.deleteMany)
 
 
 //
