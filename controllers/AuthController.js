@@ -1,5 +1,5 @@
 const User = require("../models/users");
-const Token = require("../models/emailtoken")
+const Token = require("../models/emailtoken");
 const { JWTAuthToken } = require("../helper/JWT");
 const crypto = require("crypto");
 const sendEmail = require("../utils/sendEmail");
@@ -9,22 +9,20 @@ const saltRounds = 10;
 
 class AuthController {
   register = async (req, res) => {
-    const username = req.body.username;
+    const email = req.body.email;
     const password = bcrypt.hashSync(req.body.password, saltRounds);
     const name = req.body.name;
+    const address = req.body.address;
     const phone = req.body.phone;
     const role = "user";
-    const mail = req.body.mail;
     const emailVerified = false;
-    const avatar = '/default-avatar';
-    const courseID = [];
-    const gem = 0;
-    const birthday = new Date();
-    const pointID = [];
-    const gender = "nam";
-    console.log({ username, password });
+    const cart = [];
+    const avatar = "/default-avatar";
+    const receipts = [];
+    const birthday = req.body.birthday;
+    console.log({ email, password });
 
-    User.findOne({ username: username })
+    User.findOne({ email: email })
       .exec()
       .then((data) => {
         if (data) {
@@ -35,19 +33,17 @@ class AuthController {
           );
         } else {
           const newUser = new User({
-            username,
+            email,
             password,
             name,
             phone,
             role,
-            mail,
             emailVerified,
             avatar,
-            courseID,
-            gem,
             birthday,
-            pointID,
-            gender
+            cart,
+            receipts,
+            address,
           });
 
           newUser.save().then((data) => {
@@ -55,21 +51,23 @@ class AuthController {
               JSON.stringify({
                 message: "Sign up successfully",
                 token: JWTAuthToken({
-                  username,
+                  email,
                 }),
-                username,
+                email,
                 data,
               })
             );
 
             const token = new Token({
-              username: username,
+              email: email,
               token: crypto.randomBytes(32).toString("hex"),
-            }).save().then((data) => {
-              console.log("tokennnnn: ", data)
-              const url = `${process.env.FE_URL}/xac-nhan-email/${username}/${data.token}`;
-              sendEmail(mail, "Verify Email", url);
-            });
+            })
+              .save()
+              .then((data) => {
+                console.log("tokennnnn: ", data);
+                const url = `${process.env.FE_URL}/xac-nhan-email/${email}/${data.token}`;
+                sendEmail(mail, "Verify Email", url);
+              });
           });
         }
       })
@@ -84,26 +82,23 @@ class AuthController {
   };
   //---------------------------------------------------------------LOGIN--------------------------------------------------------------------------//
   login = async (req, res) => {
-    const username = req.body.username;
+    const email = req.body.email;
     const password = req.body.password;
 
-    User.findOne({ username: username })
+    User.findOne({ email: email })
       .exec()
       .then((data) => {
         //check password, if password is correct then get all data and respond for client
         if (bcrypt.compareSync(password, data.password)) {
+          const { password, ...user } = data._doc;
 
-          const { password, ...user } = data._doc
-
-          res
-            .status(200)
-            .send(
-              JSON.stringify({
-                message: "Login successfully",
-                user: user,
-                token: JWTAuthToken({ username }),
-              })
-            );
+          res.status(200).send(
+            JSON.stringify({
+              message: "Login successfully",
+              user: user,
+              token: JWTAuthToken({ userId: user._id }),
+            })
+          );
         } else {
           throw new Error();
         }
@@ -111,7 +106,7 @@ class AuthController {
       .catch((err) => {
         res.status(401).send(
           JSON.stringify({
-            message: "Login error, wrong username or password",
+            message: "Login error, wrong email or password",
           })
         );
       });
@@ -130,20 +125,19 @@ class AuthController {
     );
   };
 
-
   //----------------------------------------------------verify-email-----------------------------------------------------------------------------//
   verifyEmail = async (req, res) => {
     try {
-      const user = await User.findOne({ username: req.params.id });
+      const user = await User.findOne({ email: req.params.id });
       if (!user) return res.status(400).send({ message: "Invalid link" });
       console.log("user: ", user);
       const token = await Token.findOne({
-        username: user.username,
+        email: user.email,
         token: req.params.token,
       });
       if (!token) return res.status(400).send({ message: "Invalid link" });
 
-      await User.updateOne({ username: user.username, emailVerified: true });
+      await User.updateOne({ email: user.email, emailVerified: true });
       await token.remove();
 
       res.status(200).send({ message: "Email verified successfully" });
@@ -152,6 +146,5 @@ class AuthController {
     }
   };
 }
-
 
 module.exports = new AuthController();

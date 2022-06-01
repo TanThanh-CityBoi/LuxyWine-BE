@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const UserSchema = new Schema(
   {
-    username: {
+    email: {
       type: String,
       required: true,
     },
@@ -14,7 +14,6 @@ const UserSchema = new Schema(
     name: String,
     phone: String,
     role: String,
-    mail: String,
     emailVerified: Boolean,
     address: [
       {
@@ -29,10 +28,10 @@ const UserSchema = new Schema(
     cart: [
       {
         count: Number,
-        productId: "",
+        productId: { type: Schema.Types.ObjectId, ref: "product" },
       },
     ],
-    receipts: [], // lấy lịch sử mua hàng
+    receipts: [{ type: Schema.Type.ObjectId, ref: "receipt" }], // lấy lịch sử mua hàng
   },
   { timestamps: true }
 );

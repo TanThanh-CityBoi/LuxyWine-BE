@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const Receipt = new Schema(
   {
-    customerID: String, // ID khách hàng, nullable
+    customer: { type: Schema.Types.ObjectId, ref: "user" }, // ID khách hàng, nullable
     receiver: {
       name: String,
       email: String,
@@ -15,7 +15,7 @@ const Receipt = new Schema(
         convine: String,
       },
     }, // Tên và địa chỉ người nhận hàng.
-    voucherID: { type: Schema.Types.ObjectId, ref: "voucher" }, // Object id của voucher.
+    voucher: { type: Schema.Types.ObjectId, ref: "voucher" }, // Object id của voucher.
     totalPrice: Number,
     profit: Number,
     staff: { id: String, name: String },
