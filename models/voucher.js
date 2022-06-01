@@ -3,10 +3,15 @@ const Schema = mongoose.Schema;
 
 const Voucher = new Schema(
   {
-    currentCode: String,
+    code: String,
     description: String,
-    discount: Number,
+    amount: Number,
+    limit: Number,
     type: Numer, // 1: money, 2: percent
+    isPublic: Boolean,
+    users: [{ type: Schema.Types.ObjectId, ref: "user" }],
+    isEnable: Boolean,
+    quantity: Number,
     exp: Date,
   },
   { timestamps: true }

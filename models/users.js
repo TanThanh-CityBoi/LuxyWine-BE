@@ -31,7 +31,7 @@ const UserSchema = new Schema(
         productId: { type: Schema.Types.ObjectId, ref: "product" },
       },
     ],
-    receipts: [{ type: Schema.Type.ObjectId, ref: "receipt" }], // lấy lịch sử mua hàng
+    receipts: [{ type: Schema.Types.ObjectId, ref: "receipt" }], // lấy lịch sử mua hàng
   },
   { timestamps: true }
 );
