@@ -12,4 +12,4 @@ const News = new Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("News", News);
+module.exports = mongoose.model("news", News);

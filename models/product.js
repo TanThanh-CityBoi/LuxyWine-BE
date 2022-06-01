@@ -10,11 +10,11 @@ const ProductSchema = new Schema(
     imgURLs: [String], // Các ảnh kèm theo
     quantity: Number, // Số lượng
     importPrice: Number, // Giá nhập
-    sellPrice: Number, // Giá bán gốc
-    discountPrice: Number, // Giá bán đã sale
+    originPrice: Number, // Giá bán gốc
+    price: Number, // Giá bán
     temperature: { minimum: Number, maximum: Number }, // Nhiệt độ sử dụng
     color: String, // Màu sắc của rượu
-    food: [String], // Các thức ăn kèm, lưu String là tên như dưới
+    foods: [String], // Các thức ăn kèm, lưu String là tên như dưới
     /*
    1 - Phô mai 
    2 - Bánh ngọt
@@ -46,3 +46,19 @@ const ProductSchema = new Schema(
 
 const Product = mongoose.model("products", ProductSchema);
 module.exports = Product;
+
+const sampleFilter = {
+  productType: "wine",
+  color: ["red", "pink"],
+  price: [
+    { _min: 1, _max: 29999 },
+    { _min: 30000, _max: 50000 },
+  ],
+  capicity: [750, 1000],
+  concentrationPercent: [
+    { _min: 1, _max: 29999 },
+    { _min: 30000, _max: 50000 },
+  ],
+  producer: ["Nhà tao", "Nhà ba tao"],
+  foods: ["Gà", "Bò", "Vịt"],
+};

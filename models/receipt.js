@@ -15,7 +15,7 @@ const Receipt = new Schema(
         convine: String,
       },
     }, // Tên và địa chỉ người nhận hàng.
-    // voucherID: [String], xem xét sau
+    voucherID: { type: Schema.Types.ObjectId, ref: "voucher" }, // Object id của voucher.
     totalPrice: Number,
     profit: Number,
     staff: { id: String, name: String },
@@ -25,4 +25,4 @@ const Receipt = new Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Receipt", Receipt);
+module.exports = mongoose.model("receipt", Receipt);

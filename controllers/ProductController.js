@@ -3,9 +3,20 @@ const Product = require("../models/product");
 class ProductController {
   getList = async (req, res) => {
     // console.log("Vô nhầm route")
-    Product.find()
+    // params = {price: "1,299999999;5000000,6000000"}
+    const params = req.query;
+    // if (params && params.price) {
+    //   const temp = params.price.plit(";");
+    //   const listFilterPrice = temp.map((item) => item.split(","));
+    //   delete params.price
+    // }
+    Product.find({ ...params, actualSalePrice: "1,299999999;5000000,6000000" })
       .exec()
       .then((data) => {
+        // if ( params && params.price){
+        //   const minPrice = params.price.split(",")[0];
+        //   const maxPrice = par
+        // }
         res.status(200).send(
           JSON.stringify({
             data: data,
@@ -76,19 +87,19 @@ class ProductController {
     );
   };
 
-  deleteMany = async (req, res)=>{
-    res.status(200).send("Hihi delete many")
-  }
+  deleteMany = async (req, res) => {
+    res.status(200).send("Hihi delete many");
+  };
 
   _delete = async (req, res) => {
-    Product.deleteOne({_id : req.params.id}, function (err, data) {
+    Product.deleteOne({ _id: req.params.id }, function (err, data) {
       console.log({ err, data });
       if (err) {
         res.status(404).send(err);
       } else {
         res
           .status(200)
-          .send(JSON.stringify({ message: "Delete Successfully" , data}));
+          .send(JSON.stringify({ message: "Delete Successfully", data }));
       }
     });
   };

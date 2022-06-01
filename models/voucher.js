@@ -12,4 +12,4 @@ const Voucher = new Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Voucher", Voucher);
+module.exports = mongoose.model("voucher", Voucher);

@@ -9,4 +9,4 @@ const Banner = new Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Banner", Banner);
+module.exports = mongoose.model("banner", Banner);
