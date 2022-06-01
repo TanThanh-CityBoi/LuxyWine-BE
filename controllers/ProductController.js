@@ -1,16 +1,94 @@
 const Product = require("../models/product");
+const FilterConverter = require("../utils/filterConverter");
 
 class ProductController {
   getList = async (req, res) => {
     // console.log("Vô nhầm route")
     // params = {price: "1,299999999;5000000,6000000"}
-    const params = req.query;
-    // if (params && params.price) {
-    //   const temp = params.price.plit(";");
-    //   const listFilterPrice = temp.map((item) => item.split(","));
-    //   delete params.price
+    // const params = req.query
+
+    const sampleFilter = {
+      productType: ["wine", "combo"],
+      color: ["red"],
+      price: [
+        { _min: 1, _max: 700000 },
+        { _min: 30000, _max: 50000 },
+      ],
+      capacity: [750, 1000],
+      concentrationPercent: [
+        { _min: 1, _max: 29999 },
+        { _min: 30000, _max: 50000 },
+      ],
+      producer: ["Nhà tao", "Nhà ba tao"],
+      foods: ["Gà", "Bò", "Vịt"],
+    };
+
+    const params = sampleFilter;
+    const queryElement = [];
+    if (params && params.productType && params.productType.includes("wine")) {
+      if (params.price) {
+        const querryPrice = FilterConverter.rangeFilter("price", params.price);
+        queryElement.push(querryPrice);
+      }
+
+      if (
+        params.concentrationPercent &&
+        params.concentrationPercent.length != 0
+      ) {
+        const querryPrice = FilterConverter.rangeFilter(
+          "concentrationPercent",
+          params.concentrationPercent
+        );
+        queryElement.push(querryPrice);
+      }
+
+      if (params.color && params.color.length != 0) {
+        const querryPrice = FilterConverter.multipleValuesFilter(
+          "color",
+          params.color
+        );
+        queryElement.push(querryPrice);
+      }
+
+      if (params.capacity && params.capacity.length != 0) {
+        const querryPrice = FilterConverter.multipleValuesFilter(
+          "capacity",
+          params.capacity
+        );
+        queryElement.push(querryPrice);
+      }
+
+      if (params.producer && params.producer.length != 0) {
+        const querryPrice = FilterConverter.multipleValuesFilter(
+          "producer",
+          params.producer
+        );
+        queryElement.push(querryPrice);
+      }
+
+      if (params.foods && params.foods.length != 0) {
+        const querryPrice = FilterConverter.multipleValuesInList(
+          "foods",
+          params.foods
+        );
+        queryElement.push(querryPrice);
+      }
+    }
+
+    // if (params.productType) {
+    //   const querryPrice = FilterConverter.rangeFilter(
+    //     "productType",
+    //     params.productType
+    //   );
+    //   queryElement.push(querryPrice);
     // }
-    Product.find({ ...params, actualSalePrice: "1,299999999;5000000,6000000" })
+
+    console.log(
+      JSON.stringify(FilterConverter.combineFilter(queryElement), null, 2)
+    );
+
+    //FilterConverter.combineFilter(queryElement)
+    Product.find(FilterConverter.combineFilter(queryElement))
       .exec()
       .then((data) => {
         // if ( params && params.price){
