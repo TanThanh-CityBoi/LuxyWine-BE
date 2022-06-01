@@ -1,0 +1,3 @@
+JWT_SECRET=Thisisprivatekey
+PORT=5000
+MONGODB_URI=mongodb+srv://admin:GkfdkJgWDfTWUyEX@luxywine.f1fdn.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
