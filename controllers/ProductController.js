@@ -1,3 +1,4 @@
+const { populate } = require("../models/product");
 const Product = require("../models/product");
 const FilterConverter = require("../utils/filterConverter");
 
@@ -7,23 +8,23 @@ class ProductController {
     // params = {price: "1,299999999;5000000,6000000"}
     // const params = req.query
 
-    const sampleFilter = {
-      productType: ["wine", "combo"],
-      color: ["red"],
-      price: [
-        { _min: 1, _max: 700000 },
-        { _min: 30000, _max: 50000 },
-      ],
-      capacity: [750, 1000],
-      concentrationPercent: [
-        { _min: 1, _max: 29999 },
-        { _min: 30000, _max: 50000 },
-      ],
-      producer: ["Nhà tao", "Nhà ba tao"],
-      foods: ["Gà", "Bò", "Vịt"],
-    };
+    // const sampleFilter = {
+    //   productType: ["wine"],
+    //   color: ["red"],
+    //   price: [
+    //     { _min: 1, _max: 700000 },
+    //     { _min: 30000, _max: 50000 },
+    //   ],
+    //   capacity: [750, 1000],
+    //   concentrationPercent: [
+    //     { _min: 1, _max: 29999 },
+    //     { _min: 30000, _max: 50000 },
+    //   ],
+    //   producer: ["Nhà tao", "Nhà ba tao"],
+    //   foods: ["Gà", "Bò", "Vịt"],
+    // };
 
-    const params = sampleFilter;
+    const params = req.query;
     const queryElement = [];
     if (params && params.productType && params.productType.includes("wine")) {
       if (params.price) {
@@ -75,14 +76,6 @@ class ProductController {
       }
     }
 
-    // if (params.productType) {
-    //   const querryPrice = FilterConverter.rangeFilter(
-    //     "productType",
-    //     params.productType
-    //   );
-    //   queryElement.push(querryPrice);
-    // }
-
     console.log(
       JSON.stringify(FilterConverter.combineFilter(queryElement), null, 2)
     );
@@ -95,6 +88,58 @@ class ProductController {
         //   const minPrice = params.price.split(",")[0];
         //   const maxPrice = par
         // }
+        res.status(200).send(
+          JSON.stringify({
+            data: data,
+          })
+        );
+      })
+      .catch((error) => {
+        res.status(404).send(error);
+      });
+  };
+
+  getListSpecialProduct = async (req, res) => {
+    const query = {
+      $or: [
+        {
+          productType: { $eq: "combo" },
+        },
+        {
+          productType: { $eq: "gift" },
+        },
+        {
+          isSpecialProduct: { $eq: true },
+        },
+        {
+          isNewProduct: { $eq: true },
+        },
+        {
+          isSaleProduct: { $eq: true },
+        },
+      ],
+    };
+    Product.find(query)
+      .exec()
+      .then((data) => {
+        res.status(200).send(
+          JSON.stringify({
+            data: data,
+          })
+        );
+      })
+      .catch((error) => {
+        res.status(404).send(error);
+      });
+  };
+
+  getListAccessary = async (req, res) => {
+    const query = {
+      productType: { $eq: "accessary" },
+    };
+    Product.find(query)
+      .exec()
+      .then((data) => {
         res.status(200).send(
           JSON.stringify({
             data: data,
@@ -124,6 +169,7 @@ class ProductController {
     const product = req.body;
     const _product = new Product({
       ...product,
+      isSaleProduct: product.price < product.originPrice,
     });
 
     console.log("debug 2", _product);
@@ -141,6 +187,11 @@ class ProductController {
   update = async (req, res) => {
     const id = req.params.id;
     const product = req.body;
+    if (product.price < product.originPrice) {
+      product.isSaleProduct = true;
+    } else {
+      product.isSaleProduct = false;
+    }
 
     Product.findOneAndUpdate(
       {

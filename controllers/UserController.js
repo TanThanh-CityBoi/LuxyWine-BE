@@ -1,8 +1,9 @@
-const Voucher = require("../models/voucher");
-class VoucherController {
-  getAll = async (req, res) => {
-    console.log("Vô voucher");
-    Voucher.find()
+const User = require("../models/user");
+
+class UserController {
+  getList = async (req, res) => {
+    // console.log("Vô nhầm route")
+    User.find()
       .exec()
       .then((data) => {
         res.status(200).send(
@@ -15,8 +16,9 @@ class VoucherController {
         res.status(404).send(error);
       });
   };
+
   getOne = async (req, res) => {
-    Voucher.findById(req.params.id)
+    User.findById(req.params.id)
       .then((product) => {
         res.status(200).send(
           JSON.stringify({
@@ -30,13 +32,13 @@ class VoucherController {
   };
 
   create = async (req, res) => {
-    const voucher = req.body;
-    const _voucher = new Voucher({
-      ...voucher,
+    const user = req.body;
+    const _user = new User({
+      ...user,
     });
 
-    console.log("debug 2", _voucher);
-    _voucher
+    console.log("debug 2", _user);
+    _user
       .save()
       .then((data) => {
         res.status(200).send(JSON.stringify(data));
@@ -49,15 +51,15 @@ class VoucherController {
 
   update = async (req, res) => {
     const id = req.params.id;
-    const voucher = req.body;
+    const user = req.body;
 
-    Voucher.findOneAndUpdate(
+    User.findOneAndUpdate(
       {
         _id: id,
       },
       {
         $set: {
-          ...voucher,
+          ...user,
         },
       },
       {
@@ -75,7 +77,7 @@ class VoucherController {
   };
 
   _delete = async (req, res) => {
-    Voucher.deleteOne({ _id: req.params.id }, function (err, data) {
+    User.deleteOne({ _id: req.params.id }, function (err, data) {
       console.log({ err, data });
       if (err) {
         res.status(404).send(err);
@@ -87,4 +89,4 @@ class VoucherController {
     });
   };
 }
-module.exports = new VoucherController();
+module.exports = new UserController();

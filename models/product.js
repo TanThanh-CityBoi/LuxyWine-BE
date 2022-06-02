@@ -40,6 +40,7 @@ const ProductSchema = new Schema(
     isSpecialProduct: Boolean, // :à sản phẩm đặc biệt
     isNewProduct: Boolean, // là sản phẩm mới
     hasSold: Number, // số lượng sản phẩm đã bán
+    isSaleProduct: Boolean,
   },
   { timestamps: true }
 );
