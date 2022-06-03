@@ -13,14 +13,17 @@ const UserSchema = new Schema(
     },
     name: String,
     phone: String,
+    gender: Number, // 1 nam, 2 nữ, 3 khác
     role: String,
     emailVerified: Boolean,
     address: [
       {
-        district: String, // Quận
-        province: String, // Tỉnh/TP
-        ward: String, // Phường
+        district: Object, // Quận
+        province: Object, // Tỉnh/TP
+        ward: Object, // Phường
         description: String, // Địa chỉ cụ thể
+        name: String, // tên người nhận
+        phone: String, // Số điện thoại
       },
     ],
     avatar: String,
