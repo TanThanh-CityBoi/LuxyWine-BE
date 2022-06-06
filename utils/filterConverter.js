@@ -1,12 +1,13 @@
 const rangeFilter = (field, rangeList) => {
   const res = {
-    $or: rangeList.map((obj) => {
+    $or: rangeList.map((obj, idx) => {
+      if (idx % 2 === 1) return;
       return {
-        $and: [{ [field]: { $gt: obj._min } }, { [field]: { $lte: obj._max } }],
+        $and: [{ [field]: { $gt: obj } }, { [field]: { $lte: rangeList[idx + 1] } }],
       };
     }),
   };
-  return res;
+  return { $or: res.$or.filter((val) => val !== undefined) };
 };
 
 const multipleValuesFilter = (field, valueList) => {

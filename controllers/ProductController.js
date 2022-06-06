@@ -25,6 +25,7 @@ class ProductController {
     // };
 
     const params = req.query;
+
     const queryElement = [];
     if (params && params.productType && params.productType.includes("wine")) {
       if (params.price) {
@@ -75,7 +76,6 @@ class ProductController {
         queryElement.push(querryPrice);
       }
     }
-
     console.log(
       JSON.stringify(FilterConverter.combineFilter(queryElement), null, 2)
     );
