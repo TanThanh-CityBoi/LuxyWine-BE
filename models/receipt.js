@@ -3,24 +3,20 @@ const Schema = mongoose.Schema;
 
 const Receipt = new Schema(
   {
-    customer: { type: Schema.Types.ObjectId, ref: "user" }, // ID khách hàng, nullable
+    creater: { type: Schema.Types.ObjectId, ref: "user" }, // ID người tạo, nullable
     receiver: {
       name: String,
-      email: String,
       phoneNumber: String, // required
-      address: {
-        name: String,
-        ward: String,
-        district: String,
-        convine: String,
-      },
+      province: {},
+      district: {},
+      ward: {},
     }, // Tên và địa chỉ người nhận hàng.
     voucher: { type: Schema.Types.ObjectId, ref: "voucher" }, // Object id của voucher.
     totalPrice: Number,
     profit: Number,
-    staff: { id: String, name: String },
+    cart: [],
     status: Number, //0: bị hủy, 1: chờ xác nhận, 2: đã xác nhận, 3: đang giao. 4: đã giao, 5: hoàn thành, 6: boom hàng
-    payMethod: Number, // 1: thẻ, 2: momo, 3: sau
+    payMethod: Number, // 1: trả trước, 3: trả sau
   },
   { timestamps: true }
 );

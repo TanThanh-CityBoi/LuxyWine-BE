@@ -18,7 +18,7 @@ class ReceiptController {
   };
 
   getList = async (req, res) => {
-    const filter = req.Receipt.find()
+    Receipt.find()
       .exec()
       .then((data) => {
         res.status(200).send(
@@ -34,6 +34,7 @@ class ReceiptController {
 
   getOne = async (req, res) => {
     Receipt.findById(req.params.id)
+      .populate("creater")
       .then((product) => {
         res.status(200).send(
           JSON.stringify({
@@ -48,6 +49,7 @@ class ReceiptController {
 
   create = async (req, res) => {
     const receipt = req.body;
+    console.log({ receipt });
     const _receipt = new Receipt({
       ...receipt,
     });
