@@ -6,6 +6,8 @@ const connectDB = require('./configDB'); // connect MongoDB
 const PORT = process.env.PORT || 5000; // port number
 const app = express();
 const route = require('./routers/index'); // router impl
+var morgan = require('morgan')
+app.use(morgan('combined'))
 
 //some middleware
 app.use(bodyParser.json({ limit: 10000 }));
