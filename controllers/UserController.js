@@ -47,6 +47,52 @@ class UserController {
       });
   };
 
+  userAddToCart = async (req, res) => {
+    console.log("vao r ne");
+    const { email } = res.locals.data;
+    const newCartItem = req.body;
+    // newCartItem =
+    //   {
+    //     product: _id của product
+    //     ,
+    //     quantity: 4 // số lượng á Thành à :3
+    //   }
+    //
+    console.log({ email, newCartItem });
+    User.findOne({ email: email })
+      .then((user) => {
+        console.log({ user });
+        let isExist = false;
+        const editedCart = user.cart.map((item) => {
+          if (item.product == newCartItem.product) {
+            item.quantity = item.quantity + newCartItem.quantity;
+            isExist = true;
+          }
+          return item;
+        });
+        if (!isExist) {
+          editedCart.push(newCartItem);
+        }
+        console.log({ editedCart });
+        user.cart = editedCart;
+        user
+          .save()
+          .then((data) => {
+            res.status(200).send(
+              JSON.stringify({
+                data,
+              })
+            );
+          })
+          .catch((error) => {
+            throw new Error("System failure!");
+          });
+      })
+      .catch((error) => {
+        res.status(404).send(JSON.stringify(error));
+      });
+  };
+
   create = async (req, res) => {
     const user = req.body;
     const _user = new User({

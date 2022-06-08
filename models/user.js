@@ -30,8 +30,8 @@ const UserSchema = new Schema(
     birthday: Date,
     cart: [
       {
-        count: Number,
-        productId: { type: Schema.Types.ObjectId, ref: "product" },
+        quantity: Number,
+        product: { type: Schema.Types.ObjectId, ref: "product" },
       },
     ],
     receipts: [{ type: Schema.Types.ObjectId, ref: "receipt" }], // lấy lịch sử mua hàng

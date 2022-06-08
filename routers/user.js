@@ -9,6 +9,7 @@ router.get("/list", UserController.getList);
 router.get("/getCurrentUser", AuthMiddleware, UserController.getCurrentUser);
 router.get("/:id", UserController.getOne);
 router.post("/new", UserController.create);
+router.post("/addItemToCart", AuthMiddleware, UserController.userAddToCart);
 router.put("/:id", UserController.update);
 router.delete("/:id", UserController._delete);
 
