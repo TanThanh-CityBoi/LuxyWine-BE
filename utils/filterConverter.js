@@ -3,7 +3,10 @@ const rangeFilter = (field, rangeList) => {
     $or: rangeList.map((obj, idx) => {
       if (idx % 2 === 1) return;
       return {
-        $and: [{ [field]: { $gt: obj } }, { [field]: { $lte: rangeList[idx + 1] } }],
+        $and: [
+          { [field]: { $gt: obj } },
+          { [field]: { $lte: rangeList[idx + 1] } },
+        ],
       };
     }),
   };

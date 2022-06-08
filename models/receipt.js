@@ -10,12 +10,13 @@ const Receipt = new Schema(
       province: {},
       district: {},
       ward: {},
+      note: String,
     }, // Tên và địa chỉ người nhận hàng.
     voucher: { type: Schema.Types.ObjectId, ref: "voucher" }, // Object id của voucher.
+    cart: [],
     totalPrice: Number,
     profit: Number,
-    cart: [],
-    status: Number, //0: bị hủy, 1: chờ xác nhận, 2: đã xác nhận, 3: đang giao. 4: đã giao, 5: hoàn thành, 6: boom hàng
+    status: Number, //0: bị hủy, 1: chờ xác nhận, 2: đã xác nhận, 3: đang giao. 4: đã nhận hàng, 6: boom hàng
     payMethod: Number, // 1: trả trước, 3: trả sau
   },
   { timestamps: true }
