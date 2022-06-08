@@ -10,6 +10,7 @@ const Receipt = new Schema(
       province: {},
       district: {},
       ward: {},
+      description: String,
       note: String,
     }, // Tên và địa chỉ người nhận hàng.
     voucher: { type: Schema.Types.ObjectId, ref: "voucher" }, // Object id của voucher.

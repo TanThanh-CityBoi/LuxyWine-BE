@@ -66,7 +66,7 @@ class AuthController {
               .then((data) => {
                 console.log("tokennnnn: ", data);
                 const url = `${process.env.FE_URL}/xac-nhan-email/${email}/${data.token}`;
-                sendEmail(mail, "Verify Email", url);
+                sendEmail(email, "Verify Email", url);
               });
           });
         }
@@ -96,7 +96,7 @@ class AuthController {
             JSON.stringify({
               message: "Login successfully",
               user: user,
-              token: JWTAuthToken({ userId: user._id }),
+              token: JWTAuthToken({ email: user.email }),
             })
           );
         } else {

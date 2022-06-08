@@ -31,6 +31,22 @@ class UserController {
       });
   };
 
+  getCurrentUser = async (req, res) => {
+    const { email } = res.locals.data;
+    console.log({ email }, res.locals.data);
+    User.find({ email: email })
+      .then((product) => {
+        res.status(200).send(
+          JSON.stringify({
+            data: product,
+          })
+        );
+      })
+      .catch((error) => {
+        res.status(404).send(error);
+      });
+  };
+
   create = async (req, res) => {
     const user = req.body;
     const _user = new User({
