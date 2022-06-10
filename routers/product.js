@@ -14,6 +14,7 @@ router.put("/:id", ProductController.update);
 router.delete("/:id", ProductController._delete);
 router.delete("/deleteMany", ProductController.deleteMany);
 
+router.post("/getProductsInCart", ProductController.getProductsInCart);
 //
 
 //--------

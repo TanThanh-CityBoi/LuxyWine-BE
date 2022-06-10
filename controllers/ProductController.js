@@ -232,6 +232,38 @@ class ProductController {
       }
     });
   };
+
+  getProductsInCart = async (req, res) => {
+    try{
+
+      const cart = req.body.cart;
+      var ObjectId = require("mongodb").ObjectId;
+
+      const listID = cart.map((item) =>{
+
+        var _oID = new ObjectId(item.product);
+        return _oID;
+      })
+      const products = await Product.find({'_id': {$in: listID}}).exec();
+      const data = products.map((item)=>{
+        var cartItem = {product: item, quantity: 0}
+        cart.forEach(element => {
+          var _oID = new ObjectId(element.product);
+          if(_oID.toString() === item._id.toString()) cartItem.quantity = element.quantity;
+        });
+        return cartItem;
+      })
+      console.log("dataaa: ", data)
+      res.status(200).send(
+        JSON.stringify({
+          data: data
+        })
+      )
+    }
+    catch(error){
+      res.status(400).send(error.message)
+    }
+  }
 }
 
 module.exports = new ProductController();
