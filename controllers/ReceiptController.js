@@ -1,9 +1,10 @@
 const ObjectId = require("mongodb").ObjectID;
+const { JWTVerify } = require("../helper/JWT");
 const Receipt = require("../models/receipt");
 class ReceiptController {
   getUserReceipt = async (req, res) => {
     const id = new ObjectId(res.local.data.userId);
-    Receipt.find({ customer: id })
+    Receipt.find({ creater: id })
       .exec()
       .then((data) => {
         res.status(200).send(
@@ -18,7 +19,9 @@ class ReceiptController {
   };
 
   getList = async (req, res) => {
-    Receipt.find()
+    const params = req.query;
+    console.log({ params });
+    Receipt.find(params)
       .exec()
       .then((data) => {
         res.status(200).send(
@@ -49,6 +52,18 @@ class ReceiptController {
 
   create = async (req, res) => {
     const receipt = req.body;
+    const authorizationHeader = req.headers["authorization"];
+    console.log({ authorizationHeader });
+    if (authorizationHeader) {
+      const token = authorizationHeader?.split(" ")[1];
+      const reqData = JWTVerify(token);
+      console.log({
+        token,
+        reqData,
+      });
+      receipt.creater = reqData.decoded.id;
+    }
+
     console.log({ receipt });
     const _receipt = new Receipt({
       ...receipt,
@@ -69,6 +84,7 @@ class ReceiptController {
   update = async (req, res) => {
     const id = req.params.id;
     const receipt = req.body;
+    console.log({ id, receipt });
 
     Receipt.findOneAndUpdate(
       {

@@ -20,6 +20,7 @@ const Voucher = new Schema(
       productCount: Number, // Số sản phẩm tối thiểu trong 1 lần mua
       minTotalPrice: Number, // Giá tối thiểu
       isFirstTime: Boolean, // Là km dành cho người mới
+      minPoint: Number,
     },
   },
   { timestamps: true }

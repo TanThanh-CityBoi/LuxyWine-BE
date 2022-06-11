@@ -6,7 +6,7 @@ const Receipt = new Schema(
     creater: { type: Schema.Types.ObjectId, ref: "user" }, // ID người tạo, nullable
     receiver: {
       name: String,
-      phoneNumber: String, // required
+      phone: String, // required
       province: {},
       district: {},
       ward: {},
@@ -19,8 +19,19 @@ const Receipt = new Schema(
     profit: Number,
     status: Number, //0: bị hủy, 1: chờ xác nhận, 2: đã xác nhận, 3: đang giao. 4: đã nhận hàng, 6: boom hàng
     payMethod: Number, // 1: trả trước, 3: trả sau
+    shippingUnit: String,
+    shippingCode: String,
   },
   { timestamps: true }
 );
 
 module.exports = mongoose.model("receipt", Receipt);
+
+// const statusList = [
+//   { color: "#ff8b60", title: "Đã hủy" },
+//   { color: "#ffb246", title: "Chờ xác nhận" },
+//   { color: "#ffd84c", title: "Đã xác nhận" },
+//   { color: "#a9d78c", title: "Đang giao hàng" },
+//   { color: "#6bc8a3", title: "Đã nhận hàng" },
+//   { color: "#f00", title: "Không nhận hàng" },
+// ];

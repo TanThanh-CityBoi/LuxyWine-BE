@@ -52,6 +52,7 @@ class AuthController {
                 message: "Sign up successfully",
                 token: JWTAuthToken({
                   email,
+                  id: data._id,
                 }),
                 email,
                 data,
@@ -84,10 +85,11 @@ class AuthController {
   login = async (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
-
+    console.log({ email, password });
     User.findOne({ email: email })
       .exec()
       .then((data) => {
+        console.log({ data });
         //check password, if password is correct then get all data and respond for client
         if (bcrypt.compareSync(password, data.password)) {
           const { password, ...user } = data._doc;
@@ -96,7 +98,7 @@ class AuthController {
             JSON.stringify({
               message: "Login successfully",
               user: user,
-              token: JWTAuthToken({ email: user.email }),
+              token: JWTAuthToken({ email: user.email, id: user._id }),
             })
           );
         } else {
