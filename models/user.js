@@ -31,7 +31,7 @@ const UserSchema = new Schema(
     cart: [
       {
         quantity: Number,
-        product: { type: Schema.Types.ObjectId, ref: "product" },
+        product: { type: Schema.Types.ObjectId, ref: "product" }, // Lưu trữ ID nha người anh em :))
       },
     ],
     receipts: [{ type: Schema.Types.ObjectId, ref: "receipt" }], // lấy lịch sử mua hàng

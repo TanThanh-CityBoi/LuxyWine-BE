@@ -16,7 +16,7 @@ const Receipt = new Schema(
     voucher: { type: Schema.Types.ObjectId, ref: "voucher" }, // Object id của voucher.
     cart: [
       {
-        product: {},
+        product: {}, // này là object product không thay đổi theo giá trị product bên bảng product.
         quantity: Number,
       },
     ],
