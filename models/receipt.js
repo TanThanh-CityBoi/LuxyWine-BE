@@ -23,7 +23,7 @@ const Receipt = new Schema(
     totalPrice: Number,
     profit: Number,
     status: Number, //0: bị hủy, 1: chờ xác nhận, 2: đã xác nhận, 3: đang giao. 4: đã nhận hàng, 6: boom hàng
-    payMethod: Number, // 1: trả trước, 3: trả sau
+    payMethod: Number, // 1: trả trước, 2: Momo, 3: Ngân hàng
     shippingUnit: String,
     shippingCode: String,
   },

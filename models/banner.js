@@ -3,7 +3,9 @@ const Schema = mongoose.Schema;
 
 const Banner = new Schema(
   {
-    slides: [{ avtUrl: String, title: String, description: String }], // Danh sách các hình
+    slides: [
+      { imgURL: String, title: String, description: String, path: String },
+    ], // Danh sách các hình
     type: Number, // 1: Home , 2:
   },
   { timestamps: true }
