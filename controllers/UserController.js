@@ -150,5 +150,47 @@ class UserController {
       }
     });
   };
+
+  userEditCart = async (req, res) => {
+    try {
+      const { email } = res.locals.data;
+      const newCartItem = req.body;
+
+      const user = await User.findOne({ email: email }).exec();
+      if (!user) throw Error("user not found");
+
+      var existID = -1;
+      console.log("user cart: ", user.cart);
+      user.cart.forEach((item, idx) => {
+        if (item.product == newCartItem.product) {
+          existID = idx;
+        }
+      });
+      var editedCart = [];
+      if (existID > -1) {
+        if (newCartItem.quantity > 0)
+          editedCart = [...user.cart.slice(0, existID), newCartItem, ...user.cart.slice(existID + 1)];
+        else
+          editedCart = [...user.cart.slice(0, existID), ...user.cart.slice(existID + 1)];
+
+        user.cart = editedCart;
+        user.save();
+        console.log("user after edit: ", user);
+        res.status(200).send(
+          JSON.stringify({
+            user: user,
+            message: "edit cart success"
+          })
+        )
+      }
+      else {
+        throw Error('cart item not found');
+      }
+    }
+    catch (error) {
+      res.status(400).send(error.message);
+    }
+  };
+
 }
 module.exports = new UserController();
