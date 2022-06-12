@@ -14,7 +14,12 @@ const Receipt = new Schema(
       note: String,
     }, // Tên và địa chỉ người nhận hàng.
     voucher: { type: Schema.Types.ObjectId, ref: "voucher" }, // Object id của voucher.
-    cart: [],
+    cart: [
+      {
+        product: {},
+        quantity: Number,
+      },
+    ],
     totalPrice: Number,
     profit: Number,
     status: Number, //0: bị hủy, 1: chờ xác nhận, 2: đã xác nhận, 3: đang giao. 4: đã nhận hàng, 6: boom hàng
