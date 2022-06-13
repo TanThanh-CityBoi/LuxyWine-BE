@@ -5,6 +5,7 @@ class ReceiptController {
   getUserReceipt = async (req, res) => {
     const id = new ObjectId(res.local.data.userId);
     Receipt.find({ creater: id })
+      .sort({ createdAt: -1 })
       .exec()
       .then((data) => {
         res.status(200).send(
@@ -22,6 +23,7 @@ class ReceiptController {
     const params = req.query;
     console.log({ params });
     Receipt.find(params)
+      .sort({ createdAt: -1 })
       .exec()
       .then((data) => {
         res.status(200).send(
