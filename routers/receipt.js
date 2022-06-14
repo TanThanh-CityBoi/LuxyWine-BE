@@ -6,6 +6,7 @@ const { AuthMiddleware } = require("../helper/JWT");
 //--------
 //these router handle sign in and sign up
 router.get("/list", AuthMiddleware, ReceiptController.getList);
+router.get("/getUserReceipt", AuthMiddleware, ReceiptController.getUserReceipt);
 router.get("/:id", ReceiptController.getOne);
 router.post("/new", ReceiptController.create);
 router.put("/:id", ReceiptController.update);
