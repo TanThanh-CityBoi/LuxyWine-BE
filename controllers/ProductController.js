@@ -76,6 +76,11 @@ class ProductController {
         queryElement.push(querryPrice);
       }
     }
+    queryElement.push({
+      productType: 'wine'
+    })
+
+    console.log("query element: ", queryElement);
     console.log(
       JSON.stringify(FilterConverter.combineFilter(queryElement), null, 2)
     );
@@ -88,6 +93,8 @@ class ProductController {
         //   const minPrice = params.price.split(",")[0];
         //   const maxPrice = par
         // }
+
+       // console.log("dataaa: ", data);
         res.status(200).send(
           JSON.stringify({
             data: data,
