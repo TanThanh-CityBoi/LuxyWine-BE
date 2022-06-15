@@ -13,7 +13,10 @@ const Receipt = new Schema(
       description: String,
       note: String,
     }, // Tên và địa chỉ người nhận hàng.
-    voucher: { type: Schema.Types.ObjectId, ref: "voucher" }, // Object id của voucher.
+    voucher: {
+      voucher: { type: Schema.Types.ObjectId, ref: "voucher" },
+      amount: Number,
+    }, // Object id của voucher.
     cart: [
       {
         product: {}, // này là object product không thay đổi theo giá trị product bên bảng product.

@@ -1,9 +1,12 @@
 const User = require("../models/user");
+const saltRounds = 10;
+const bcrypt = require("bcrypt");
 
 class UserController {
   getList = async (req, res) => {
     // console.log("Vô nhầm route")
     User.find()
+      .sort({ createdAt: -1 })
       .exec()
       .then((data) => {
         res.status(200).send(
@@ -97,6 +100,7 @@ class UserController {
     const user = req.body;
     const _user = new User({
       ...user,
+      password: bcrypt.hashSync(req.body.password, saltRounds),
     });
 
     console.log("debug 2", _user);
@@ -169,9 +173,16 @@ class UserController {
       var editedCart = [];
       if (existID > -1) {
         if (newCartItem.quantity > 0)
-          editedCart = [...user.cart.slice(0, existID), newCartItem, ...user.cart.slice(existID + 1)];
+          editedCart = [
+            ...user.cart.slice(0, existID),
+            newCartItem,
+            ...user.cart.slice(existID + 1),
+          ];
         else
-          editedCart = [...user.cart.slice(0, existID), ...user.cart.slice(existID + 1)];
+          editedCart = [
+            ...user.cart.slice(0, existID),
+            ...user.cart.slice(existID + 1),
+          ];
 
         user.cart = editedCart;
         user.save();
@@ -179,18 +190,15 @@ class UserController {
         res.status(200).send(
           JSON.stringify({
             user: user,
-            message: "edit cart success"
+            message: "edit cart success",
           })
-        )
+        );
+      } else {
+        throw Error("cart item not found");
       }
-      else {
-        throw Error('cart item not found');
-      }
-    }
-    catch (error) {
+    } catch (error) {
       res.status(400).send(error.message);
     }
   };
-
 }
 module.exports = new UserController();

@@ -74,6 +74,61 @@ class VoucherController {
     );
   };
 
+  check = async (req, res) => {
+    try {
+      const voucherCode = req.params.id;
+      const { totalPrice, productCount } = req.body;
+      console.log({ voucherCode, totalPrice, productCount });
+      const voucher = await Voucher.findOne({ code: voucherCode });
+
+      if (!voucher) {
+        res.status(200).send(
+          JSON.stringify({
+            success: false,
+            message: "Không tồn tại mã giảm giá, vui lòng kiểm tra lại",
+          })
+        );
+      }
+
+      if (
+        voucher.condition.productCount > productCount ||
+        voucher.condition.minTotalPrice > totalPrice
+      ) {
+        res.status(200).send(
+          JSON.stringify({
+            success: false,
+            message: "Không đủ điều kiện sử dụng mã giảm giá",
+          })
+        );
+      }
+      let amount = voucher.amount;
+
+      if (voucher.type === 2) {
+        amount = (totalPrice * amount) / 100;
+      }
+
+      amount = voucher.limit > amount ? amount : voucher.limit;
+
+      res.status(200).send(
+        JSON.stringify({
+          success: true,
+          message: "Áp dụng mã giảm giá thành công",
+          voucher: {
+            voucher: voucher._id,
+            amount,
+          },
+        })
+      );
+    } catch (e) {
+      res.status(200).send(
+        JSON.stringify({
+          success: false,
+          message: "Lỗi hệ thống, xin lỗi vì sự bất tiện này",
+        })
+      );
+    }
+  };
+
   _delete = async (req, res) => {
     Voucher.deleteOne({ _id: req.params.id }, function (err, data) {
       console.log({ err, data });
