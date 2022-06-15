@@ -87,6 +87,7 @@ class ProductController {
 
     //FilterConverter.combineFilter(queryElement)
     Product.find(FilterConverter.combineFilter(queryElement))
+      .sort({ createdAt: -1 })
       .exec()
       .then((data) => {
         // if ( params && params.price){
@@ -127,6 +128,7 @@ class ProductController {
       ],
     };
     Product.find(query)
+      .sort({ createdAt: -1 })
       .exec()
       .then((data) => {
         res.status(200).send(
@@ -145,6 +147,7 @@ class ProductController {
       productType: { $eq: "accessary" },
     };
     Product.find(query)
+      .sort({ createdAt: -1 })
       .exec()
       .then((data) => {
         res.status(200).send(
@@ -241,36 +244,34 @@ class ProductController {
   };
 
   getProductsInCart = async (req, res) => {
-    try{
-
+    try {
       const cart = req.body.cart;
       var ObjectId = require("mongodb").ObjectId;
 
-      const listID = cart.map((item) =>{
-
+      const listID = cart.map((item) => {
         var _oID = new ObjectId(item.product);
         return _oID;
-      })
-      const products = await Product.find({'_id': {$in: listID}}).exec();
-      const data = products.map((item)=>{
-        var cartItem = {product: item, quantity: 0}
-        cart.forEach(element => {
+      });
+      const products = await Product.find({ _id: { $in: listID } }).exec();
+      const data = products.map((item) => {
+        var cartItem = { product: item, quantity: 0 };
+        cart.forEach((element) => {
           var _oID = new ObjectId(element.product);
-          if(_oID.toString() === item._id.toString()) cartItem.quantity = element.quantity;
+          if (_oID.toString() === item._id.toString())
+            cartItem.quantity = element.quantity;
         });
         return cartItem;
-      })
-      console.log("dataaa: ", data)
+      });
+      console.log("dataaa: ", data);
       res.status(200).send(
         JSON.stringify({
-          data: data
+          data: data,
         })
-      )
+      );
+    } catch (error) {
+      res.status(400).send(error.message);
     }
-    catch(error){
-      res.status(400).send(error.message)
-    }
-  }
+  };
 }
 
 module.exports = new ProductController();

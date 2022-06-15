@@ -3,6 +3,7 @@ class VoucherController {
   getAll = async (req, res) => {
     console.log("Vô voucher");
     Voucher.find()
+      .sort({ createdAt: -1 })
       .exec()
       .then((data) => {
         res.status(200).send(
