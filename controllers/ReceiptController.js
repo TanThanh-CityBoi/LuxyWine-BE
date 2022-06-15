@@ -60,34 +60,34 @@ class ReceiptController {
   };
 
   create = async (req, res) => {
-    const receipt = req.body;
-    const authorizationHeader = req.headers["authorization"];
-    console.log({ authorizationHeader });
-    if (authorizationHeader) {
-      const token = authorizationHeader?.split(" ")[1];
-      const reqData = JWTVerify(token);
-      console.log({
-        token,
-        reqData,
+    try {
+      const receipt = req.body;
+      const authorizationHeader = req.headers["authorization"];
+      console.log({ authorizationHeader });
+      if (authorizationHeader) {
+        const token = authorizationHeader?.split(" ")[1];
+        const reqData = JWTVerify(token);
+        console.log({
+          token,
+          reqData,
+        });
+        receipt.creater = reqData.decoded.id;
+      }
+
+      const _receipt = new Receipt({
+        ...receipt,
       });
-      receipt.creater = reqData.decoded.id;
+
+      console.log("debug 2: ", _receipt);
+      _receipt.save();
+
+      User.updateOne({ _id: _receipt.creater }, { cart: [] }).exec();
+      res.status(200).send(JSON.stringify({data: _receipt}));
+    }
+    catch (error) {
+      res.status(404).send(error.message)
     }
 
-    console.log({ receipt });
-    const _receipt = new Receipt({
-      ...receipt,
-    });
-
-    console.log("debug 2", _receipt);
-    _receipt
-      .save()
-      .then((data) => {
-        res.status(200).send(JSON.stringify(data));
-      })
-      .catch((err) => {
-        console.log(err);
-        res.status(404).send(err);
-      });
   };
 
   update = async (req, res) => {
