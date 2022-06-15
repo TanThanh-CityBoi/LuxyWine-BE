@@ -4,6 +4,7 @@ class NewsController {
   getList = async (req, res) => {
     // console.log("Vô nhầm route")
     News.find()
+      .sort({ createdAt: -1 })
       .exec()
       .then((data) => {
         res.status(200).send(
