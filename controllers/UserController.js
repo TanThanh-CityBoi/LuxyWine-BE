@@ -169,9 +169,16 @@ class UserController {
       var editedCart = [];
       if (existID > -1) {
         if (newCartItem.quantity > 0)
-          editedCart = [...user.cart.slice(0, existID), newCartItem, ...user.cart.slice(existID + 1)];
+          editedCart = [
+            ...user.cart.slice(0, existID),
+            newCartItem,
+            ...user.cart.slice(existID + 1),
+          ];
         else
-          editedCart = [...user.cart.slice(0, existID), ...user.cart.slice(existID + 1)];
+          editedCart = [
+            ...user.cart.slice(0, existID),
+            ...user.cart.slice(existID + 1),
+          ];
 
         user.cart = editedCart;
         user.save();
@@ -179,18 +186,15 @@ class UserController {
         res.status(200).send(
           JSON.stringify({
             user: user,
-            message: "edit cart success"
+            message: "edit cart success",
           })
-        )
+        );
+      } else {
+        throw Error("cart item not found");
       }
-      else {
-        throw Error('cart item not found');
-      }
-    }
-    catch (error) {
+    } catch (error) {
       res.status(400).send(error.message);
     }
   };
-
 }
 module.exports = new UserController();
