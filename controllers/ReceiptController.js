@@ -1,22 +1,29 @@
-const ObjectId = require("mongodb").ObjectID;
 const { JWTVerify } = require("../helper/JWT");
 const Receipt = require("../models/receipt");
+const User = require("../models/user");
 class ReceiptController {
   getUserReceipt = async (req, res) => {
-    const id = new ObjectId(res.local.data.userId);
-    Receipt.find({ creater: id })
-      .sort({ createdAt: -1 })
-      .exec()
-      .then((data) => {
-        res.status(200).send(
-          JSON.stringify({
-            data: data,
-          })
-        );
-      })
-      .catch((error) => {
-        res.status(404).send(error);
-      });
+    try {
+      var ObjectId = require("mongodb").ObjectId;
+      const { id } = res.locals.data;
+      const userID = new ObjectId(id);
+
+      Receipt.find({ creater: userID })
+        .sort({ createdAt: -1 })
+        .exec()
+        .then((data) => {
+          res.status(200).send(
+            JSON.stringify({
+              data: data,
+            })
+          );
+        })
+        .catch((error) => {
+          res.status(404).send(error);
+        });
+    } catch (error) {
+      res.status(404).send(error.message);
+    }
   };
 
   getList = async (req, res) => {

@@ -1,9 +1,12 @@
 const User = require("../models/user");
+const saltRounds = 10;
+const bcrypt = require("bcrypt");
 
 class UserController {
   getList = async (req, res) => {
     // console.log("Vô nhầm route")
     User.find()
+      .sort({ createdAt: -1 })
       .exec()
       .then((data) => {
         res.status(200).send(
@@ -97,6 +100,7 @@ class UserController {
     const user = req.body;
     const _user = new User({
       ...user,
+      password: bcrypt.hashSync(req.body.password, saltRounds),
     });
 
     console.log("debug 2", _user);
