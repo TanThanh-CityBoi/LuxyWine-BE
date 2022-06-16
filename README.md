@@ -1,5 +1,7 @@
-# Luxy Wine
 
+
+# Luxy Wine
+<br>
 [![tag](https://img.shields.io/badge/-course-4db39d)](https://github.com/hacThe/LuxyWine-FE)
 [![tag](https://img.shields.io/badge/-study-4db39d)](https://github.com/hacThe/LuxyWine-FE)
 [![os](https://img.shields.io/badge/-ecomerce-%230175C2)](https://github.com/hacThe/LuxyWine-FE)
@@ -14,7 +16,8 @@
 
 
 **Luxy Wine** là website thương mại điện tử dịch vụ dành cho việc buôn bán các sản phẩm rượu. Phục vụ cho việc quản lý của chủ sở hữu và truyền bá đến người dùng
-[Bản deploy](https://luxy-wine-izj8dxxmv-hacthe.vercel.app/trang-chu)
+<br>
+[Vào xem LuxyWine](https://luxy-wine-izj8dxxmv-hacthe.vercel.app/trang-chu)
 ---
 
 ## **📝 Mục lục**
