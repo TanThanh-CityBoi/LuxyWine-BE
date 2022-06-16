@@ -14,7 +14,7 @@
 
 
 **Luxy Wine** là website thương mại điện tử dịch vụ dành cho việc buôn bán các sản phẩm rượu. Phục vụ cho việc quản lý của chủ sở hữu và truyền bá đến người dùng
-
+[Bản deploy](https://luxy-wine-izj8dxxmv-hacthe.vercel.app/trang-chu)
 ---
 
 ## **📝 Mục lục**
